@@ -1,6 +1,11 @@
 appId: com.psynote.app
 productName: PsyNote
 copyright: PsyNote
+# Публикацию релиза делает отдельный job в GitHub Actions
+# (.github/workflows/release.yml → softprops/action-gh-release), поэтому
+# встроенный publisher electron-builder отключён — иначе он на тег
+# `v*` пытается аплоадить артефакты сам и требует GH_TOKEN.
+publish: null
 directories:
   output: release
   buildResources: resources
