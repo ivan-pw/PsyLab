@@ -1,0 +1,200 @@
+/**
+ * src/renderer/src/components/Timeline/TimelineItem.tsx
+ *
+ * Один пункт ленты событий клиента.
+ *
+ * Кодировка событий (см. plan §3.8 / миграции 003 и 005):
+ *  - meeting      — aux1=status
+ *  - revision     — aux1=field_key, aux2=prev_value, extra=note
+ *  - anamnesis    — payload_text=превью
+ *  - note_event   — aux1=action ('create'|'update'|'delete'),
+ *                   aux2=color_id (snapshot), extra=note_id
+ *  - protocol     — aux1=meeting_id, payload_text=превью
+ *  - client_created — нет дополнительных полей; не интерактивно
+ *
+ * Все интерактивные события открываются через onOpen(kind, event).
+ * client_created остаётся не-кликабельным.
+ */
+import {
+  CalendarCheck,
+  Eraser,
+  FileEdit,
+  FilePlus,
+  History,
+  Pencil,
+  StickyNote,
+  Trash2,
+  UserPlus
+} from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { formatDateTime, truncate } from '@/lib/format'
+import { HISTORIZED_FIELD_META, isHistorizedField } from '@/lib/historized'
+import { medicationsToText } from '@/lib/medications'
+import type { TimelineEvent } from '@shared/types'
+
+const MEETING_STATUS_LABEL: Record<string, string> = {
+  planned: 'Запланирована',
+  done: 'Проведена',
+  cancelled: 'Отменена'
+}
+
+const NOTE_ACTION_LABEL: Record<string, string> = {
+  create: 'Заметка создана',
+  update: 'Заметка изменена',
+  delete: 'Заметка удалена'
+}
+
+function fieldLabel(key: string | null): string {
+  if (key && isHistorizedField(key)) return HISTORIZED_FIELD_META[key].label
+  return key ?? ''
+}
+
+function pickIcon(ev: TimelineEvent) {
+  switch (ev.kind) {
+    case 'meeting':
+      return CalendarCheck
+    case 'revision':
+      return ev.payload_text === null ? Eraser : History
+    case 'anamnesis':
+      return FilePlus
+    case 'note_event':
+      if (ev.aux1 === 'delete') return Trash2
+      if (ev.aux1 === 'update') return Pencil
+      return StickyNote
+    case 'protocol':
+      return FileEdit
+    case 'client_created':
+      return UserPlus
+  }
+}
+
+function pickAccent(ev: TimelineEvent): string {
+  switch (ev.kind) {
+    case 'meeting':
+      return 'bg-blue-500/20 text-blue-300'
+    case 'revision':
+      return 'bg-amber-500/20 text-amber-300'
+    case 'anamnesis':
+      return 'bg-purple-500/20 text-purple-300'
+    case 'note_event':
+      if (ev.aux1 === 'delete') return 'bg-red-500/20 text-red-300'
+      return 'bg-emerald-500/20 text-emerald-300'
+    case 'protocol':
+      return 'bg-cyan-500/20 text-cyan-300'
+    case 'client_created':
+      return 'bg-muted text-muted-foreground'
+  }
+}
+
+function renderTitle(ev: TimelineEvent): React.ReactNode {
+  switch (ev.kind) {
+    case 'meeting': {
+      const status = ev.aux1 ? MEETING_STATUS_LABEL[ev.aux1] ?? ev.aux1 : 'Встреча'
+      return <span>Встреча — {status}</span>
+    }
+    case 'revision': {
+      const fkey = ev.aux1
+      const isMeds = fkey === 'medications'
+      const prev = isMeds ? medicationsToText(ev.aux2) : ev.aux2
+      const next = isMeds
+        ? ev.payload_text === null
+          ? null
+          : medicationsToText(ev.payload_text)
+        : ev.payload_text
+      const label = fieldLabel(fkey)
+      if (next === null) {
+        return (
+          <span>
+            Очищено: <strong>{label}</strong>
+            {prev && (
+              <span className="text-muted-foreground"> · было «{truncate(prev, 60)}»</span>
+            )}
+          </span>
+        )
+      }
+      return (
+        <span>
+          Изменено: <strong>{label}</strong>
+          <span className="text-muted-foreground"> · «{truncate(next, 80)}»</span>
+        </span>
+      )
+    }
+    case 'anamnesis':
+      return <span>Анамнез</span>
+    case 'note_event': {
+      const label = ev.aux1 ? NOTE_ACTION_LABEL[ev.aux1] ?? 'Заметка' : 'Заметка'
+      return <span>{label}</span>
+    }
+    case 'protocol':
+      return <span>Протокол встречи</span>
+    case 'client_created':
+      return <span>Клиент создан</span>
+  }
+}
+
+type Props = {
+  event: TimelineEvent
+  /** Кликабельность даётся всем событиям, кроме client_created. */
+  onOpen?: (event: TimelineEvent) => void
+}
+
+export function TimelineItem({ event, onOpen }: Props) {
+  const Icon = pickIcon(event)
+  const accent = pickAccent(event)
+  const isRevision = event.kind === 'revision'
+  const isProtocol = event.kind === 'protocol'
+  const isNoteEvent = event.kind === 'note_event'
+  const isAnamnesis = event.kind === 'anamnesis'
+  const clickable = event.kind !== 'client_created' && Boolean(onOpen)
+
+  const content = (
+    <>
+      <div
+        className={cn(
+          'z-10 mt-0.5 grid size-7 shrink-0 place-items-center rounded-full ring-4 ring-background',
+          accent
+        )}
+      >
+        <Icon className="size-3.5" />
+      </div>
+      <div className="min-w-0 flex-1 pb-4">
+        <div className="text-xs text-muted-foreground">{formatDateTime(event.at)}</div>
+        <div className="mt-0.5 text-sm">{renderTitle(event)}</div>
+        {event.kind === 'meeting' && event.payload_text && (
+          <div className="mt-1 text-sm text-muted-foreground">{event.payload_text}</div>
+        )}
+        {(isNoteEvent || isProtocol) && event.payload_text && (
+          <div className={cn('mt-1 text-sm', isNoteEvent ? '' : 'text-muted-foreground')}>
+            {truncate(event.payload_text, 200)}
+          </div>
+        )}
+        {isAnamnesis && event.payload_text && (
+          <div className="mt-1 text-sm text-muted-foreground">
+            {truncate(event.payload_text, 200)}
+          </div>
+        )}
+        {isRevision && event.extra && (
+          <div className="mt-1 text-xs italic text-muted-foreground">
+            Комментарий: {event.extra}
+          </div>
+        )}
+      </div>
+    </>
+  )
+
+  return (
+    <li className="relative">
+      {clickable ? (
+        <button
+          type="button"
+          onClick={() => onOpen?.(event)}
+          className="flex w-full gap-3 rounded-md text-left transition-colors hover:bg-accent/30"
+        >
+          {content}
+        </button>
+      ) : (
+        <div className="flex gap-3">{content}</div>
+      )}
+    </li>
+  )
+}

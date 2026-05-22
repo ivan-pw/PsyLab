@@ -1,0 +1,80 @@
+{
+  "app": {
+    "name": "PsyNote",
+    "loading": "Загрузка…"
+  },
+  "nav": {
+    "clients": "Клиенты",
+    "calendar": "Календарь",
+    "settings": "Настройки",
+    "lock": "Заблокировать"
+  },
+  "topbar": {
+    "search_placeholder": "Поиск… (⌘K)",
+    "toggle_theme": "Сменить тему",
+    "language": "Язык"
+  },
+  "common": {
+    "create": "Создать",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "restore": "Восстановить",
+    "archive": "В архив",
+    "back": "Назад",
+    "edit": "Редактировать",
+    "history": "История",
+    "confirm_delete": "Удалить? Действие необратимо."
+  },
+  "destructive": {
+    "title": "Подтверждение удаления",
+    "warning": "Это действие необратимо. Для подтверждения введите слово «{{word}}» ниже.",
+    "word": "удалить",
+    "input_placeholder": "введите «удалить»",
+    "confirm": "Удалить навсегда",
+    "mismatch": "Введите слово точно как указано"
+  },
+  "theme": {
+    "system": "Системная",
+    "light": "Светлая",
+    "dark": "Тёмная"
+  },
+  "language": {
+    "ru": "Русский",
+    "en": "English"
+  },
+  "search": {
+    "no_results": "Ничего не найдено",
+    "loading": "Поиск…",
+    "groups": {
+      "client": "Клиенты",
+      "note": "Заметки",
+      "anamnesis": "Анамнезы",
+      "revision": "Изменения",
+      "protocol": "Протоколы"
+    }
+  },
+  "clients": {
+    "title": "Клиенты",
+    "new": "Новый клиент",
+    "show_archived": "Показать архивные",
+    "search_placeholder": "Поиск по ФИО, телефону, email…",
+    "empty": "Пока нет клиентов. Нажмите «Новый клиент».",
+    "not_found": "Ничего не найдено."
+  },
+  "meeting": {
+    "status": {
+      "planned": "Запланирована",
+      "done": "Проведена",
+      "cancelled": "Отменена"
+    }
+  },
+  "fields": {
+    "phone": "Телефон",
+    "email": "Email",
+    "messenger": "Мессенджер",
+    "video_link": "Видео-ссылка",
+    "diagnosis": "Диагноз",
+    "medications": "Медикаменты"
+  }
+}

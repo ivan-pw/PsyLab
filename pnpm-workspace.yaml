@@ -1,0 +1,8 @@
+# pnpm 11+ требует явного разрешения на запуск native build-скриптов.
+# Реальная пере-сборка better-sqlite3-multiple-ciphers под Electron делается
+# в postinstall через `electron-builder install-app-deps`. Эти флаги просто
+# подавляют предупреждение ERR_PNPM_IGNORED_BUILDS.
+allowBuilds:
+  better-sqlite3-multiple-ciphers: true
+  electron: true
+  esbuild: true

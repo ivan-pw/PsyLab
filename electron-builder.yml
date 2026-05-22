@@ -1,0 +1,32 @@
+appId: com.psynote.app
+productName: PsyNote
+copyright: PsyNote
+directories:
+  output: release
+  buildResources: resources
+files:
+  - out/**
+  - package.json
+  - resources/**
+asarUnpack:
+  - "**/*.node"
+mac:
+  target:
+    - dmg
+  category: public.app-category.medical
+  icon: resources/icon.icns
+  # identity: null отключает поиск Apple Developer ID. Сам electron-builder
+  # подпись делать не будет; ad-hoc подпись применяем в afterSign-хуке
+  # (см. build/afterSign.js) — этого достаточно, чтобы macOS не показывал
+  # «is damaged» после снятия карантинного xattr.
+  identity: null
+  notarize: false
+afterSign: build/afterSign.js
+win:
+  target:
+    - nsis
+  icon: resources/icon.ico
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: false

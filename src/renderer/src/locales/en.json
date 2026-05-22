@@ -1,0 +1,80 @@
+{
+  "app": {
+    "name": "PsyNote",
+    "loading": "Loading…"
+  },
+  "nav": {
+    "clients": "Clients",
+    "calendar": "Calendar",
+    "settings": "Settings",
+    "lock": "Lock"
+  },
+  "topbar": {
+    "search_placeholder": "Search… (⌘K)",
+    "toggle_theme": "Toggle theme",
+    "language": "Language"
+  },
+  "common": {
+    "create": "Create",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "restore": "Restore",
+    "archive": "Archive",
+    "back": "Back",
+    "edit": "Edit",
+    "history": "History",
+    "confirm_delete": "Delete? This action is irreversible."
+  },
+  "destructive": {
+    "title": "Confirm deletion",
+    "warning": "This action cannot be undone. Type the word \"{{word}}\" below to confirm.",
+    "word": "delete",
+    "input_placeholder": "type \"delete\"",
+    "confirm": "Delete permanently",
+    "mismatch": "Type the exact word"
+  },
+  "theme": {
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "language": {
+    "ru": "Русский",
+    "en": "English"
+  },
+  "search": {
+    "no_results": "Nothing found",
+    "loading": "Searching…",
+    "groups": {
+      "client": "Clients",
+      "note": "Notes",
+      "anamnesis": "Anamneses",
+      "revision": "Field changes",
+      "protocol": "Session protocols"
+    }
+  },
+  "clients": {
+    "title": "Clients",
+    "new": "New client",
+    "show_archived": "Show archived",
+    "search_placeholder": "Search by name, phone, email…",
+    "empty": "No clients yet. Click \"New client\".",
+    "not_found": "Nothing matches."
+  },
+  "meeting": {
+    "status": {
+      "planned": "Planned",
+      "done": "Done",
+      "cancelled": "Cancelled"
+    }
+  },
+  "fields": {
+    "phone": "Phone",
+    "email": "Email",
+    "messenger": "Messenger",
+    "video_link": "Video link",
+    "diagnosis": "Diagnosis",
+    "medications": "Medications"
+  }
+}
