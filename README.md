@@ -1,6 +1,6 @@
 # PsyNote
 
-> 🇷🇺 [Русская версия](./README.ru.md)
+>  [Русская версия](./README.ru.md)
 
 A local desktop application for psychologists: clients, sessions, notes,
 structured anamneses, per-field revision timeline, and full-text search
