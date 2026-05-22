@@ -50,7 +50,7 @@ Platforms: **macOS**, **Windows**, **Linux**.
 
 ## Running from source (dev)
 
-Requirements: **Node ≥ 20**, **pnpm ≥ 9**.
+Requirements: **Node ≥ 20**, **pnpm ≥ 10**.
 
 ```bash
 git clone <repo-url> psynote
