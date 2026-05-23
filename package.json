@@ -1,13 +1,13 @@
 {
   "name": "psynote",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "description": "Локальное настольное приложение для психолога: клиенты, встречи, заметки, анамнезы.",
   "main": "out/main/index.js",
   "author": "PsyNote",
   "license": "SEE LICENSE IN LICENSE",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "scripts": {
     "dev": "pnpm rebuild:native && cross-env ELECTRON_RUN_AS_NODE= electron-vite dev",
